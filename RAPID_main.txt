@@ -1,0 +1,143 @@
+MODULE MAIN_MODULE
+
+PROC Moves
+
+RozpoznanieZmiennej();
+
+IF tem == "0" THEN
+CallProc A1;
+ELSE IF tem == "1" THEN
+CallProc A2;
+ELSE IF tem == "2" THEN
+CallProc A3;
+ELSE IF tem == "3" THEN
+CallProc A4;
+ELSE IF tem == "4" THEN
+CallProc A5;
+ELSE IF tem == "5" THEN
+CallProc A6;
+ELSE IF tem == "6" THEN
+CallProc A7;
+ELSE IF tem == "7" THEN
+CallProc A8;
+ELSE IF tem == "8" THEN
+CallProc B1;
+ELSE IF tem == "9" THEN
+CallProc B2;
+ELSE IF tem == "10" THEN
+CallProc B3;
+ELSE IF tem == "11" THEN
+CallProc B4;
+ELSE IF tem == "12" THEN
+CallProc B5;
+ELSE IF tem == "13" THEN
+CallProc B6;
+ELSE IF tem == "14" THEN
+CallProc B7;
+ELSE IF tem == "15" THEN
+CallProc B8;
+ELSE IF tem == "16" THEN
+CallProc C1;
+ELSE IF tem == "17" THEN
+CallProc C2;
+ELSE IF tem == "18" THEN
+CallProc C3;
+ELSE IF tem == "19" THEN
+CallProc C4;
+ELSE IF tem == "20" THEN
+CallProc C5;
+ELSE IF tem == "21" THEN
+CallProc C6;
+ELSE IF tem == "22" THEN
+CallProc C7;
+ELSE IF tem == "23" THEN
+CallProc C8;
+ELSE IF tem == "24" THEN
+CallProc D1;
+ELSE IF tem == "25" THEN
+CallProc D2;
+ELSE IF tem == "26" THEN
+CallProc D3;
+ELSE IF tem == "27" THEN
+CallProc D4;
+ELSE IF tem == "28" THEN
+CallProc D5;
+ELSE IF tem == "29" THEN
+CallProc D6;
+ELSE IF tem == "30" THEN
+CallProc D7;
+ELSE IF tem == "31" THEN
+CallProc D8;
+ELSE IF tem == "32" THEN
+CallProc E1;
+ELSE IF tem == "33" THEN
+CallProc E2;
+ELSE IF tem == "34" THEN
+CallProc E3;
+ELSE IF tem == "35" THEN
+CallProc E4;
+ELSE IF tem == "36" THEN
+CallProc E5;
+ELSE IF tem == "37" THEN
+CallProc E6;
+ELSE IF tem == "38" THEN
+CallProc E7;
+ELSE IF tem == "39" THEN
+CallProc E8;
+ELSE IF tem == "40" THEN
+CallProc F1;
+ELSE IF tem == "41" THEN
+CallProc F2;
+ELSE IF tem == "42" THEN
+CallProc F3;
+ELSE IF tem == "43" THEN
+CallProc F4;
+ELSE IF tem == "44" THEN
+CallProc F5;
+ELSE IF tem == "45" THEN
+CallProc F6;
+ELSE IF tem == "46" THEN
+CallProc F7;
+ELSE IF tem == "47" THEN
+CallProc F8;
+ELSE IF tem == "48" THEN
+CallProc G1;
+ELSE IF tem == "49" THEN
+CallProc G2;
+ELSE IF tem == "50" THEN
+CallProc G3;
+ELSE IF tem == "51" THEN
+CallProc G4;
+ELSE IF tem == "52" THEN
+CallProc G5;
+ELSE IF tem == "53" THEN
+CallProc G6;
+ELSE IF tem == "54" THEN
+CallProc G7;
+ELSE IF tem == "55" THEN
+CallProc G8;
+ELSE IF tem == "56" THEN
+CallProc H1;
+ELSE IF tem == "57" THEN
+CallProc H2;
+ELSE IF tem == "58" THEN
+CallProc H3;
+ELSE IF tem == "59" THEN
+CallProc H4;
+ELSE IF tem == "60" THEN
+CallProc H5;
+ELSE IF tem == "61" THEN
+CallProc H6;
+ELSE IF tem == "62" THEN
+CallProc H7;
+ELSE IF tem == "63" THEN
+CallProc H8;
+ELST IF tem == "70" THEN
+CallProc bin
+ENDIF
+
+
+
+ENDPROC
+
+ENDMODULE

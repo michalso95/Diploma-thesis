@@ -1,0 +1,165 @@
+MODULE LAN
+
+
+    !  VAR string rozkaz;
+    
+    VAR num counterPlus:=0;
+    VAR num counterMinus:=0;
+    VAR string tem:="";
+  
+    !dim orientzyx
+
+    !Przychodzacy rozkaz move:kn:l1:x1:y1:x2:y2:...:l2:x1:y1:x2:y2:...:ln:x1:y1:x2:y2:...:
+
+    FUNC bool RozpoznanieZmiennej()
+
+      !  textOdebrany:="move:k3:l3:p100:p120:p140:p160:p180:p200:l2:p200:p200:p250:p250:l1:p300:p300:";
+        !zerowanie tablicy danych o ruchu
+        curvesNumber:= 0;
+        FOR i FROM 1 TO 10 DO
+            FOR j FROM 1 TO 20 DO
+            xp{i,j}:=0;
+            yp{i,j}:=0;
+            pointsNumber{j} := 0;
+            ENDFOR
+        ENDFOR
+        counterMinus:=0;
+        counterPlus:=0;
+        !sprawdzanie czy tekst odebrany nie jest pusty       
+        reg1:=StrLen(textOdebrany);
+        IF reg1<=0 THEN
+            RETURN FALSE;
+        ENDIF
+
+        !jesli przesylamy rozkaz calego ruchu to uzupelniamy tablice curve danymi
+        !!!uzupelniamy rozkaz w opcja
+
+        reg2:=StrFind(textOdebrany,1,":");
+        !wyszukuje gdzie znajduje sie pierwszy dwókropek
+        opcja.rozkaz:=StrPart(textOdebrany,1,reg2);
+        !zwraca rozkaz przeszukaj od 1 znaku do 
+
+        !!!uzupelniamy xp ora yp
+        !w pierwszej kolejnosci szukamy do jakiej wartosci ma sie zmienic liczba krzywych
+        IF opcja.rozkaz="step:" THEN
+            counterPlus:=reg2+1;
+            counterMinus:=reg1-reg2-1;
+            tem:=StrPart(textOdebrany,counterPlus,counterMinus);
+            !Poszukaj liczby krzywych   
+
+            reg3:=StrFind(tem,1,":");
+            ok:=StrToVal(StrPart(tem,2,reg3-2),curvesNumber);
+            counterPlus:=counterPlus+reg3;
+            counterMinus:=counterMinus-reg3;
+            tem:=StrPart(textOdebrany,counterPlus,counterMinus);
+
+
+            FOR i FROM 1 TO curvesNumber DO
+
+                reg3:=StrFind(tem,1,":");
+                ok:=StrToVal(StrPart(tem,2,reg3-2),pointsNumber{i});
+                counterPlus:=counterPlus+reg3;
+                counterMinus:=counterMinus-reg3;
+                tem:=StrPart(textOdebrany,counterPlus,counterMinus);
+
+                FOR j FROM 1 TO pointsNumber{i} DO
+
+                    reg3:=StrFind(tem,1,":");
+                    ok:=StrToVal(StrPart(tem,2,reg3-2),xp{i,j});
+                    counterPlus:=counterPlus+reg3;
+                    counterMinus:=counterMinus-reg3;
+                    tem:=StrPart(textOdebrany,counterPlus,counterMinus);
+
+                    reg3:=StrFind(tem,1,":");
+                    ok:=StrToVal(StrPart(tem,2,reg3-2),yp{i,j});
+                    counterPlus:=counterPlus+reg3;
+                    counterMinus:=counterMinus-reg3;
+                    IF counterPlus<reg1 OR counterMinus>0 THEN
+                        tem:=StrPart(textOdebrany,counterPlus,counterMinus);
+                    ENDIF
+                ENDFOR
+            ENDFOR
+            
+            FOR i FROM 1 TO 2 DO
+                FOR j FROM 1 TO 4 DO
+                     TPWrite "ruch x = "+ValToStr(xp{i,j})+" y = "+ValToStr(yp{i,j})+" .i = "+ValToStr(i)+", j = "+ValToStr(j);
+                ENDFOR
+            ENDFOR
+            TPWrite(textOdebrany);
+            RETURN TRUE;
+
+        ELSE
+            reg3:=StrFind(textOdebrany,reg2-1,".");
+            ! zwracza pozycje wartosci X
+            IF reg2>reg1 OR reg3>reg1 THEN
+                RETURN FALSE;
+            ENDIF
+            ok:=StrToVal(StrPart(textOdebrany,reg2+1,reg3-reg2),opcja.wartoscX);
+            ok:=StrToVal(StrPart(textOdebrany,reg3+1,reg1-reg3),opcja.wartoscY);
+            ! uzupelnia wartosc rozkazu
+
+        ENDIF
+        TPWrite(textOdebrany);
+        RETURN TRUE;
+    ENDFUNC
+
+    PROC TransmisjaConnect()
+
+        !SocketCreate klient;
+        !SocketConnect klient,"192.168.137.40",1000;
+         !SocketConnect klient,"127.0.0.1",1000;
+         !SocketConnect klient,"192.168.125.2",1000;
+        !SocketSend klient\Str:="robot:1:jz:jz:";
+
+    ENDPROC
+
+    PROC sendToServer()
+
+        !    IF textDoWyslania <> stEmpty THEN
+        SocketSend klient\Str:=textDoWyslania;
+        !   ENDIF
+
+    ENDPROC
+
+    PROC receivedFromServer()
+
+        SocketReceive klient\Str:=textOdebrany;
+
+        IF textOdebrany=stEmpty THEN
+            RETURN ;
+        ENDIF
+        IF stateBusy = TRUE THEN
+            IF textOdebrany="ping:0.0"THEN
+                textDoWyslania := "pong:";
+                sendToServer;
+                textOdebrany:="";
+                RETURN ;
+            ENDIF
+            IF textOdebrany="stop:0.0"THEN
+                textDoWyslania := "disconnect:";
+                sendToServer;
+                RETURN ;
+            ENDIF
+        ENDIF
+           IF RozpoznanieZmiennej()=FALSE THEN
+                opcja.rozkaz:="stop:";
+                TransmisjaDisconnect;
+            ENDIF
+      
+    ENDPROC
+
+    PROC TransmisjaDisconnect()
+
+        !SocketSend klient\Str:="disconnect:";
+        !SocketClose klient;
+        !Stop;
+
+    ENDPROC
+
+    PROC zapis_do_pliku()
+        Open "HOME:"\File:="plik_prod.txt",iodev1\Append\Bin;
+        !	WriteStrBin iodev1, text_gotowy+"\0D\0A";
+        Close iodev1;
+    ENDPROC
+
+ENDMODULE
